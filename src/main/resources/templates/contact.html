@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="fr">
+
+<!--https://waytolearnx.com/2019/10/formulaire-de-contact-avec-html-css-et-javascript.html-->
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    /*manque lien JS*/
+    <link rel="stylesheet" type="text/css" th:href="@{  /css/index.css}" />
+</head>
+
+<body>
+    <div class = container>
+
+        <header>
+            <div id="header">
+                <div th:insert="fragments/components :: header"></div>
+            </div>
+        </header>
+
+        <nav>
+            <div th:insert="fragments/components :: menu"></div>
+        </nav>
+
+        <aside>
+            <h1>Formulaire de contact</h1>
+            <form name="myForm" action="/file.php" onsubmit="return validateForm()" method="post">
+                <table class="form-style">
+                    <tr>
+                        <td>
+                            <label>
+                                Votre nom <span class="required">*</span>
+                            </label>
+                        </td>
+                        <td>
+                            <input type="text" name="name" class="long"/>
+                            <span class="error" id="errorname"></span>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <label>
+                                Votre adresse e-mail <span class="required">*</span>
+                            </label>
+                        </td>
+                        <td>
+                            <input type="email" name="email" class="long"/>
+                            <span class="error" id="erroremail"></span>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <label>
+                                Message <span class="required">*</span>
+                            </label>
+                        </td>
+                        <td>
+                            <textarea name="message" class="long field-textarea"></textarea>
+                            <span class="error" id="errormsg"></span>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td></td>
+                        <td>
+                            <input type="submit" value="Envoyer">
+                            <input type="reset" value="Réinitialiser">
+                        </td>
+                    </tr>
+                </table>
+            </form>
+        </aside>
+
+        <footer>
+            <div th:insert="fragments/components :: footer"></div>
+        </footer>
+    </div>
+</body>
+</html>

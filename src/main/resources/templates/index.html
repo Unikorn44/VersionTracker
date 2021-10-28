@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="fr">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="stylesheet" type="text/css" th:href="@{/css/index.css}" />
+</head>
+
+<body>
+    <div class = container>
+
+        <header>
+            <div id="header">
+                <div th:insert="fragments/components :: header"></div>
+            </div>
+        </header>
+
+        <br>
+        <nav>
+            <div th:insert="fragments/components :: menu"></div>
+        </nav>
+        <br>
+
+        <aside>
+            <p>
+                Bienvenue, les fichiers suivants seront analysés :
+            </p>
+
+            <ul th:each="listedApplication: ${listFileApplications}">
+
+                <li th:text="'Nom du fichier :' + ${listedApplication.fileApplicationName}"></li>
+                <br>
+                <ul th:each="listedProject: ${listedApplication.listProjets}">
+
+                    <div>
+                        <li th:text="'Type de données : ' + ${listedProject.name}"></li>
+                    </div>
+                    <div >
+                        <li>Dependances recherchées :</li>
+                        <ul th:each="trackedDependencyInfo: ${listedProject.trackedDependencyInfos}">
+                            <li th:text="'Dépendance : ' + ${trackedDependencyInfo.getDependency()} "></li>
+                        </ul>
+                    </div>
+                    <br>
+
+                </ul>
+
+                <br>
+            </ul>
+        </aside>
+
+        <br>
+        <footer>
+            <div th:insert="fragments/components :: footer"></div>
+        </footer>
+    </div>
+</body>
+</html>
