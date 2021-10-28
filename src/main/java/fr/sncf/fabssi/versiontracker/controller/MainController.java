@@ -56,40 +56,34 @@ public class MainController {
 
         listFileApplications = GetProjectsForApplication.getInfoApplication();
 
-        Map<String,Map<String,String>> listDependenciesFront = new HashMap<>();
-        Map<String,Map<String,String>> listDependenciesBack = new HashMap<>();
+        Map<String,Map<String,Map<String,String>>> listDependencies = new HashMap<>();
 
         listFileApplications.forEach(a->{
             a.getListProjets().forEach(p -> {
                 p.getDependencyInfos().forEach(d->{
-                    if(FRONTEND.equals(p.getName())) {
-                        if (!listDependenciesFront.containsKey(d.getDependency())) {
+                    if(listDependencies.containsKey(p.getName())) {
+                        if (!listDependencies.get(p.getName()).containsKey(d.getDependency())) {
                             Map<String,String> projetVersion = new HashMap<>();
                             projetVersion.put(a.getFileApplicationName(), d.getVersion());
-                            listDependenciesFront.put(d.getDependency(), projetVersion);
+                            listDependencies.get(p.getName()).put(d.getDependency(), projetVersion);
                         }else{
-                            listDependenciesFront.get(d.getDependency())
+                            listDependencies.get(p.getName()).get(d.getDependency())
                                     .put(a.getFileApplicationName(), d.getVersion());
                         }
-                    }else if(BACKEND.equals(p.getName())) {
-                        if (!listDependenciesBack.containsKey(d.getDependency())) {
-                            Map<String,String> projetVersion = new HashMap<>();
-                            projetVersion.put(a.getFileApplicationName(), d.getVersion());
-                            listDependenciesBack.put(d.getDependency(), projetVersion);
-                        }else{
-                            listDependenciesBack.get(d.getDependency())
-                                    .put(a.getFileApplicationName(), d.getVersion());
-                        }
+                    }else{
+                        Map<String,Map<String,String>> listDependenciesProjects = new HashMap<>();
+                        Map<String,String> projetVersion = new HashMap<>();
+                        projetVersion.put(a.getFileApplicationName(), d.getVersion());
+                        listDependenciesProjects.put(d.getDependency(), projetVersion);
+                        listDependencies.put(p.getName(), listDependenciesProjects);
                     }
                 });
             });
         });
-        /*System.out.println("Da list Front:" + listDependenciesFront);
-        System.out.println("Da list Back :" + listDependenciesBack);*/
 
         model.addAttribute("listFileApplications", listFileApplications);
-        model.addAttribute("listDependenciesFront", listDependenciesFront);
-        model.addAttribute("listDependenciesBack", listDependenciesBack);
+        model.addAttribute("listDependencies", listDependencies);
+
 
         return "triProject";
     }

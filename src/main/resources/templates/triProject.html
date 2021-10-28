@@ -6,7 +6,7 @@
     <meta name="viewport"
           content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <link rel="stylesheet" type="text/css" th:href="@{  /css/index.css}" />
+    <link rel="stylesheet" type="text/css" th:href="@{/css/index.css}" />
 </head>
 
 <body>
@@ -23,43 +23,25 @@
 
         <aside>
 
-            <p>
-                listDependenciesFront - listDependency
-            </p>
-            <ul>
-                <li th:each="listDependency: ${listDependenciesFront}" th:text="${listDependency}"></li>
-            </ul>
-            <br>
-            <p>
-                listDependenciesBack - listDependency
-            </p>
-            <ul>
-                <li th:each="listDependency: ${listDependenciesBack}" th:text="${listDependency}"></li>
-            </ul>
-            <br>
-            <p>Test</p>
-            <ul th:each="listDependency: ${listDependenciesFront}" >
-                    <li th:each="version:${listDependency}" th:text="${version}">pop</li>
-
-            </ul>
-
-            <br><br>
-
-            <table>
-                <thead> <!--en tête tableau-->
-                    <tr>
-                        <th>frontEnd</th>
-                        <th th:each="appli:${listFileApplications}" th:text=${appli.fileApplicationName}></th>
-                    </tr>
-                </thead>
-                <tbody> <!--contenu tableau-->
-                    <tr th:each="dep:${listDependenciesFront.keySet}">
-                        <td th:text="${dep}"></td>
-                        <td th:each="appli:${listFileApplications}" th:text=${listDependenciesFront.get(dep).getOrDefault(appli,"")}></td>
-
-                    </tr>
-                </tbody>
-            </table>
+            <div th:each="projet:${listDependencies.keySet}">
+                <table>
+                    <thead>
+                        <tr>
+                            <th th:text=${projet}></th>
+                            <th th:each="appli:${listFileApplications}" th:text=${appli.fileApplicationName}></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr th:each="dep:${listDependencies.get(projet).keySet}">
+                            <td th:text="${dep}"></td>
+                            <td th:each="appli:${listFileApplications}"
+                                th:text=${listDependencies.get(projet).get(dep).getOrDefault(appli.fileApplicationName,"N/A")}>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+                <br/>
+            </div>
 
             <br>
 

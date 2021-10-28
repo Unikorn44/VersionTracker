@@ -11,8 +11,10 @@ public class GetProjectsForApplication {
     public static List getInfoApplication() throws Exception {
 
         List<URL> applicationListURLs = new ArrayList<URL>();
-            applicationListURLs.add(new URL("file:///C:/Users/7309087K/Desktop/AppliJava/XMLRush.json"));
-            applicationListURLs.add(new URL("file:///C:/Users/7309087K/Desktop/AppliJava/XMLRush1.json"));
+            applicationListURLs.add(new URL("file:///C:/CODE/Java/XMLRush.json"));
+            applicationListURLs.add(new URL("file:///C:/CODE/Java/XMLRush1.json"));
+            //applicationListURLs.add(new URL("file:///C:/Users/7309087K/Desktop/AppliJava/XMLRush.json"));
+            //applicationListURLs.add(new URL("file:///C:/Users/7309087K/Desktop/AppliJava/XMLRush1.json"));
             //applicationListURLs.add(new URL("file:///C:/Users/7309087K/Desktop/TRANFERT_Java/AppliJava/XMLRush2.json"));
 
         List<FileApplication> listFileApplications = new ArrayList();
