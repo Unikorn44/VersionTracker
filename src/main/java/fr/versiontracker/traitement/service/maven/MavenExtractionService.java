@@ -1,10 +1,12 @@
-package fr.sncf.fabssi.versiontracker.application.maven;
+package fr.versiontracker.traitement.service.maven;
 
-import fr.sncf.fabssi.versiontracker.configuration.TrackedDependencyInfo;
+import fr.versiontracker.api.ressource.TrackedDependencyInfo;
+import fr.versiontracker.traitement.modele.MavenDependency;
 import org.apache.maven.model.Dependency;
 import org.apache.maven.model.Model;
 import org.apache.maven.model.io.xpp3.MavenXpp3Reader;
 import org.codehaus.plexus.util.xml.pull.XmlPullParserException;
+import org.springframework.stereotype.Service;
 import org.springframework.web.reactive.function.client.WebClient;
 
 import javax.xml.parsers.ParserConfigurationException;
@@ -18,10 +20,10 @@ import java.util.Properties;
 
 import org.xml.sax.SAXException;
 
-public class MavenExtraction {
+@Service
+public class MavenExtractionService {
 
-
-    public static MavenDependency extractMavenDependencyFrom(String valueTrackedDependency) {
+    public MavenDependency extractMavenDependencyFrom(String valueTrackedDependency) {
         MavenDependency mavenDependency = new MavenDependency();
         String[] retourSplits = valueTrackedDependency.split("\\|");
         mavenDependency.setGroupId(retourSplits[0]);
@@ -29,7 +31,7 @@ public class MavenExtraction {
         return mavenDependency;
     }
 
-    public static void GetVersionWithPP3(TrackedDependencyInfo newTrackedDependencyInfo, String valueUrl, MavenDependency mavenDependency) throws IOException, XmlPullParserException, URISyntaxException, ParserConfigurationException, SAXException {
+    public String getVersionWithPP3(String valueUrl, MavenDependency mavenDependency) throws IOException, XmlPullParserException, URISyntaxException, ParserConfigurationException, SAXException {
 
         Model fileModel = null;
         URL fileURL;
@@ -52,12 +54,11 @@ public class MavenExtraction {
 
         }
         List<Dependency> dependencyLists = fileModel.getDependencies();
-        String versionFound = retrieveVersion(fileModel, dependencyLists, mavenDependency.getGroupId(), mavenDependency.getArtifactId());
 
-        newTrackedDependencyInfo.setVersion(versionFound);
+        return retrieveVersion(fileModel, dependencyLists, mavenDependency.getGroupId(), mavenDependency.getArtifactId());
     }
 
-    private static String retrieveVersion(Model fileModel, List<Dependency> dependencyLists, String groupId, String artifactId) {
+    private String retrieveVersion(Model fileModel, List<Dependency> dependencyLists, String groupId, String artifactId) {
 
         String versionFound = null;
 

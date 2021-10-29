@@ -1,4 +1,4 @@
-package fr.sncf.fabssi.versiontracker;
+package fr.versiontracker;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;

@@ -1,18 +1,22 @@
-package fr.sncf.fabssi.versiontracker.application.npm;
+package fr.versiontracker.traitement.service.npm;
 
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import fr.versiontracker.traitement.modele.Dependency;
+import fr.versiontracker.traitement.modele.NPMDependency;
+import org.springframework.stereotype.Service;
 
 import java.io.IOException;
 import java.net.URL;
 import java.util.Map;
 
 @JsonIgnoreProperties
-public class NPMExtraction {
+@Service
+public class NPMExtractionService {
 
-    public static String getVersionWithJackson(String valueUrl, String trackedDependency) throws Exception {
+    public Dependency getVersionWithJackson(String valueUrl, String trackedDependency) throws Exception {
 
         URL fileURL;
         if (valueUrl.matches("http.*")) {
@@ -25,9 +29,11 @@ public class NPMExtraction {
         objectMapper.disable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES);
 
         try {
-            PackageInfos packageInfos = objectMapper.readValue(fileURL, PackageInfos.class);
-            return findVersionNPM(trackedDependency, packageInfos);
-
+            NPMDependency npmDependency = objectMapper.readValue(fileURL, NPMDependency.class);
+            Dependency dependency = new Dependency();
+            dependency.setName(trackedDependency);
+            dependency.setVersion(findVersionNPM(trackedDependency, npmDependency));
+            return dependency;
         } catch (IOException e) {
             // TODO Auto-generated catch block
             e.printStackTrace();
@@ -35,8 +41,8 @@ public class NPMExtraction {
         }
     }
 
-    public static String findVersionNPM(String trackedDependency, PackageInfos packageInfos) {
-        Map<String, String> dependenciesMap = packageInfos.getDependencies();
+    public String findVersionNPM(String trackedDependency, NPMDependency npmDependency) {
+        Map<String, String> dependenciesMap = npmDependency.getDependencies();
         String versionNPM = null;
 
         if (dependenciesMap.containsKey(trackedDependency)) {
