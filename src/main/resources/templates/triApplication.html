@@ -2,6 +2,7 @@
 <html xmlns:th="http://www.thymeleaf.org" lang="fr">
 
 <head>
+    <title>Version Tracker - Tri par application</title>
     <meta charset="UTF-8">
     <meta name="viewport"
           content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
@@ -24,38 +25,27 @@
 
         <aside>
                 <ul th:each="listedApplication: ${listFileApplications}">
-
-                <li th:text="'Fichier analysé :' + ${listedApplication.fileApplicationName}"></li>
-                <br>
-                <ul th:each="listedProject: ${listedApplication.listProjets}">
-                    <div id="rectangle">
-                        <li th:text="'Type de données : ' + ${listedProject.name}"></li>
-                    </div>
-                    <div id="rectangle2">
-                        <li th:text="'URL fichier à traiter : ' + ${listedProject.fileUrl}"></li>
-                        <li th:text="'Package manager : ' + ${listedProject.packageManager}"></li>
-
-                        <li>Dependances et Versions :</li>
-                        <ul th:each="trackedDependencyInfo: ${listedProject.trackedDependencyInfos}">
-                            <li th:text="'Dépendance : ' + ${trackedDependencyInfo.getDependency()} +' (version : ' + ${trackedDependencyInfo.getVersion()} + ')'"></li>
-                        </ul>
-                    </div>
+                    <li th:text="'Fichier analysé :' + ${listedApplication.fileApplicationName}"></li>
                     <br>
+                    <ul th:each="listedProject: ${listedApplication.listProjets}">
+                        <div id="rectangle">
+                            <li th:text="'Type de données : ' + ${listedProject.name}"></li>
+                        </div>
+                        <div id="rectangle2">
+                            <li th:text="'URL fichier à traiter : ' + ${listedProject.fileUrl}"></li>
+                            <li th:text="'Package manager : ' + ${listedProject.packageManager}"></li>
 
+                            <li>Dependances et Versions :</li>
+                            <ul th:each="trackedDependencyInfo: ${listedProject.trackedDependencyInfos}">
+                                <li th:text="'Dépendance : ' + ${trackedDependencyInfo.getDependency()} +' (version : ' + ${trackedDependencyInfo.getVersion()} + ')'"></li>
+                            </ul>
+                        </div>
+                    <br>
                 </ul>
-
                 <br>
-
             </ul>
         </aside>
-        <!--
-            <p th:text="${uneVariable}"></p>
 
-            <ul th:each="listElement: ${testList}">
-                <li th:text="${listElement}"></li>
-            </ul>
-            <br>
-        -->
         <footer>
             <div th:insert="fragments/components :: footer"></div>
         </footer>

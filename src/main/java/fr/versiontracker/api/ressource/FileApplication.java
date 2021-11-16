@@ -7,7 +7,7 @@ import java.util.List;
 @Data
 public class FileApplication {
 
-    public String fileApplicationName;
-    public List<Projet> listProjets;
+    private String fileApplicationName;
+    private List<Projet> listProjets;
 
 }

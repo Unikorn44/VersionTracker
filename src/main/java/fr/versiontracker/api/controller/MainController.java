@@ -3,18 +3,27 @@ package fr.versiontracker.api.controller;
 import fr.versiontracker.api.mapper.Mapper;
 import fr.versiontracker.api.ressource.FileApplication;
 import fr.versiontracker.traitement.service.ApplicationService;
+import fr.versiontracker.transverse.exception.NonReadableApplicationConfigurationException;
+import fr.versiontracker.transverse.exception.NonReadableDependencyFileException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.oauth2.client.OAuth2AuthorizedClient;
+import org.springframework.security.oauth2.client.annotation.RegisteredOAuth2AuthorizedClient;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.reactive.function.client.WebClient;
 
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import static org.springframework.security.oauth2.client.web.reactive.function.client.ServerOAuth2AuthorizedClientExchangeFilterFunction.oauth2AuthorizedClient;
+
 @Controller
 public class MainController {
+
+    public static final String LIST_FILE_APPLICATIONS = "listFileApplications";
 
     @Autowired
     ApplicationService applicationService;
@@ -22,34 +31,34 @@ public class MainController {
     @Autowired
     Mapper mapper;
 
-    @RequestMapping(value = {"/", "/index"}, method = RequestMethod.GET)
-    public String index(Model model) throws Exception {
+    @RequestMapping(value = {"/", "/index"})
+    public String index(Model model) throws NonReadableApplicationConfigurationException, NonReadableDependencyFileException {
 
         List<FileApplication> listFileApplications = mapper.transformeModeleEnRessource(applicationService.getInfoApplication());
-        model.addAttribute("listFileApplications", listFileApplications);
+        model.addAttribute(LIST_FILE_APPLICATIONS, listFileApplications);
 
         return "index";
+
     }
 
-    @RequestMapping(value = {"triApplication"}, method = RequestMethod.GET)
-    public String triApplication(Model model) throws Exception {
-
+    @RequestMapping(value = {"triApplication"})
+    public String triApplication(Model model) throws NonReadableApplicationConfigurationException, NonReadableDependencyFileException {
 
         List<FileApplication> listFileApplications = mapper.transformeModeleEnRessource(applicationService.getInfoApplication());
-        model.addAttribute("listFileApplications", listFileApplications);
+        model.addAttribute(LIST_FILE_APPLICATIONS, listFileApplications);
 
         return "triApplication";
     }
 
-    @RequestMapping(value = {"triProject"}, method = RequestMethod.GET)
-    public String triProject(Model model) throws Exception {
+    @RequestMapping(value = {"triProject"})
+    public String triProject(Model model) throws NonReadableApplicationConfigurationException, NonReadableDependencyFileException {
 
         List<FileApplication> listFileApplications = mapper.transformeModeleEnRessource(applicationService.getInfoApplication());
 
         Map<String,Map<String,Map<String,String>>> listDependencies = new HashMap<>();
 
-        listFileApplications.forEach(a->{
-            a.getListProjets().forEach(p -> {
+        listFileApplications.forEach(a->
+            a.getListProjets().forEach(p ->
                 p.getTrackedDependencyInfos().forEach(d->{
                     if(listDependencies.containsKey(p.getName())) {
                         if (!listDependencies.get(p.getName()).containsKey(d.getDependency())) {
@@ -67,19 +76,33 @@ public class MainController {
                         listDependenciesProjects.put(d.getDependency(), projetVersion);
                         listDependencies.put(p.getName(), listDependenciesProjects);
                     }
-                });
-            });
-        });
+                })
+            )
+        );
 
-        model.addAttribute("listFileApplications", listFileApplications);
+        model.addAttribute(LIST_FILE_APPLICATIONS, listFileApplications);
         model.addAttribute("listDependencies", listDependencies);
 
         return "triProject";
     }
 
-    @RequestMapping(value = {"/contact"}, method = RequestMethod.GET)
-    public String contact(Model model) throws Exception {
+    @RequestMapping(value = {"/contact"})
+    public String contact(Model model) {
         return "contact";
     }
 
+    private WebClient webClient;
+
+    @GetMapping(value = "/rushs")
+    public String[] getArticles(
+            @RegisteredOAuth2AuthorizedClient("rushs-client-authorization-code") OAuth2AuthorizedClient authorizedClient
+    ) {
+        return this.webClient
+                .get()
+                .uri("http://127.0.0.1:8090/rushs")
+                .attributes(oauth2AuthorizedClient(authorizedClient))
+                .retrieve()
+                .bodyToMono(String[].class)
+                .block();
+    }
 }

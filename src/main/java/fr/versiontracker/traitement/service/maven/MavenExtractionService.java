@@ -2,6 +2,8 @@ package fr.versiontracker.traitement.service.maven;
 
 import fr.versiontracker.api.ressource.TrackedDependencyInfo;
 import fr.versiontracker.traitement.modele.MavenDependency;
+import fr.versiontracker.transverse.exception.NonReadableDependencyFileException;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.maven.model.Dependency;
 import org.apache.maven.model.Model;
 import org.apache.maven.model.io.xpp3.MavenXpp3Reader;
@@ -16,12 +18,16 @@ import java.net.URISyntaxException;
 import java.net.URL;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.Properties;
 
 import org.xml.sax.SAXException;
 
 @Service
+@Slf4j
 public class MavenExtractionService {
+
+    public static final String N_EXISTE_PAS = "n'existe pas";
 
     public MavenDependency extractMavenDependencyFrom(String valueTrackedDependency) {
         MavenDependency mavenDependency = new MavenDependency();
@@ -31,10 +37,9 @@ public class MavenExtractionService {
         return mavenDependency;
     }
 
-    public String getVersionWithPP3(String valueUrl, MavenDependency mavenDependency) throws IOException, XmlPullParserException, URISyntaxException, ParserConfigurationException, SAXException {
+    public String getVersionWithPP3(String valueUrl, MavenDependency mavenDependency) throws NonReadableDependencyFileException {
 
         Model fileModel = null;
-        URL fileURL;
 
         if (valueUrl.matches("http.*")) {
 
@@ -46,15 +51,22 @@ public class MavenExtractionService {
                     .block();
 
             MavenXpp3Reader mavenXpp3Reader = new MavenXpp3Reader();
-            fileModel = mavenXpp3Reader.read(new StringReader(pomContent));
-
+            try {
+                fileModel = mavenXpp3Reader.read(new StringReader(pomContent));
+            } catch (XmlPullParserException | IOException e) {
+                log.error("Impossible de lire le pom du projet " + valueUrl,e);
+                throw new NonReadableDependencyFileException("Impossible de lire le pom du projet " + valueUrl, e);
+            }
         } else {
             MavenXpp3Reader mavenXpp3Reader = new MavenXpp3Reader();
-            fileModel = mavenXpp3Reader.read(new FileReader(valueUrl));
-
+            try {
+                fileModel = mavenXpp3Reader.read(new FileReader(valueUrl));
+            } catch (XmlPullParserException | IOException e) {
+                log.error("Impossible de lire le pom du projet " + valueUrl,e);
+                throw new NonReadableDependencyFileException("Impossible de lire le pom du projet " + valueUrl, e);
+            }
         }
         List<Dependency> dependencyLists = fileModel.getDependencies();
-
         return retrieveVersion(fileModel, dependencyLists, mavenDependency.getGroupId(), mavenDependency.getArtifactId());
     }
 
@@ -68,24 +80,18 @@ public class MavenExtractionService {
             String foundedGroupId = dependencyList.getGroupId();
 
             if (foundedGroupId.equals(groupId) && foundedArtifactId.equals(artifactId)) {
-                if (dependencyList.getVersion() != null) {
-                    versionFound = dependencyList.getVersion();
-
-                    if (versionFound.startsWith("$")) {
-                        String versionClean = versionFound.replaceAll("[\\$\\{\\}]", "");
-                        Properties properties = fileModel.getProperties();
-                        versionFound = properties.getProperty(versionClean);
-                        return versionFound;
-                    }
-
-                    return versionFound;
+                versionFound = Optional.ofNullable(dependencyList.getVersion()).orElse(N_EXISTE_PAS);
+                if (versionFound.startsWith("$")) {
+                    String versionClean = versionFound.replaceAll("[\\$\\{\\}]", "");
+                    Properties properties = fileModel.getProperties();
+                    versionFound = properties.getProperty(versionClean);
                 }
             }
         }
-        versionFound = "Pas de version pour cet artifact";
+
+        versionFound = Optional.ofNullable(versionFound).orElse(N_EXISTE_PAS);
         return versionFound;
     }
-
 
 }
 

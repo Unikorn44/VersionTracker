@@ -15,5 +15,6 @@ public class ProjectConfiguration {
 
     @JsonIgnore
     private List<Dependency> dependencies;
+
 }
 

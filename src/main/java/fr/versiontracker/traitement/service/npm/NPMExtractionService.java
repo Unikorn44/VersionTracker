@@ -6,25 +6,36 @@ import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import fr.versiontracker.traitement.modele.Dependency;
 import fr.versiontracker.traitement.modele.NPMDependency;
+import fr.versiontracker.transverse.exception.NonReadableDependencyFileException;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
+import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.Map;
 
 @JsonIgnoreProperties
 @Service
+@Slf4j
 public class NPMExtractionService {
 
-    public Dependency getVersionWithJackson(String valueUrl, String trackedDependency) throws Exception {
+    public static final String URL_DES_DEPENDANCES_INVALIDES = "Url des dépendances invalides";
+    public static final String IMPOSSIBLE_DE_LIRE_LES_DEPENDANCES = "Impossible de lire les dépendances";
+
+    public Dependency getVersionWithJackson(String valueUrl, String trackedDependency) throws NonReadableDependencyFileException {
 
         URL fileURL;
-        if (valueUrl.matches("http.*")) {
-            fileURL = new URL(valueUrl);
-        }else {
-            fileURL = new URL("file:///" + valueUrl);
+        try {
+            if (valueUrl.matches("http.*")) {
+                fileURL = new URL(valueUrl);
+            } else {
+                fileURL = new URL("file:///" + valueUrl);
+            }
+        } catch (MalformedURLException e) {
+            log.error(URL_DES_DEPENDANCES_INVALIDES, e);
+            throw new NonReadableDependencyFileException(URL_DES_DEPENDANCES_INVALIDES, e);
         }
-
         ObjectMapper objectMapper = new ObjectMapper();
         objectMapper.disable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES);
 
@@ -35,9 +46,8 @@ public class NPMExtractionService {
             dependency.setVersion(findVersionNPM(trackedDependency, npmDependency));
             return dependency;
         } catch (IOException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-            throw e;
+            log.error(IMPOSSIBLE_DE_LIRE_LES_DEPENDANCES, e);
+            throw new NonReadableDependencyFileException(IMPOSSIBLE_DE_LIRE_LES_DEPENDANCES, e);
         }
     }
 

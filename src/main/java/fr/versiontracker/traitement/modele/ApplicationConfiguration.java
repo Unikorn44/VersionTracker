@@ -9,12 +9,12 @@ import java.util.List;
 @Data
 public class ApplicationConfiguration {
 
+    @JsonIgnore
+    private String fileApplicationName;
+
     private String name;
     @JsonProperty("projects") //lecture de la balise projects dans un attribut projectConfigurations
     private List<ProjectConfiguration> projectConfigurations;
-
-    @JsonIgnore
-    private String fileApplicationName;
 
 }
 

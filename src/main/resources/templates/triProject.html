@@ -2,6 +2,7 @@
 <html xmlns:th="http://www.thymeleaf.org" lang="fr">
 
 <head>
+    <title>Version Tracker - Tri par projet</title>
     <meta charset="UTF-8">
     <meta name="viewport"
           content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
@@ -22,13 +23,17 @@
         </nav>
 
         <aside>
+            <p>
+                Liste des dépendances triées par projet :
+            </p>
 
             <div th:each="projet:${listDependencies.keySet}">
                 <table>
+                    <!--<caption>Liste des dépendances triées par projet</caption>-->
                     <thead>
                         <tr>
-                            <th th:text=${projet}></th>
-                            <th th:each="appli:${listFileApplications}" th:text=${appli.fileApplicationName}></th>
+                            <th th:text="${projet}" th:id="${projet}"></th>
+                            <th th:each="appli:${listFileApplications}" th:id="${appli.fileApplicationName}" th:text=${appli.fileApplicationName}></th>
                         </tr>
                     </thead>
                     <tbody>

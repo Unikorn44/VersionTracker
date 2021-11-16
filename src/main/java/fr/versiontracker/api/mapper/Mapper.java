@@ -22,7 +22,6 @@ public class Mapper {
             fileApplication.setListProjets(this.transformeProjectConfigurationEnProjet(a.getProjectConfigurations()));
             fileApplications.add(fileApplication);
         });
-
         return fileApplications;
     }
 
@@ -36,7 +35,6 @@ public class Mapper {
             projet.setTrackedDependencyInfos(this.transformeDependencyEnTrackedDependencyInfo(p.getDependencies()));
             projets.add(projet);
         });
-
         return projets;
     }
 
@@ -50,4 +48,5 @@ public class Mapper {
         });
         return trackedDependencyInfos;
     }
+
 }
