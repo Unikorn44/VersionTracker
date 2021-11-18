@@ -38,7 +38,6 @@ public class MainController {
         model.addAttribute(LIST_FILE_APPLICATIONS, listFileApplications);
 
         return "index";
-
     }
 
     @RequestMapping(value = {"triApplication"})
