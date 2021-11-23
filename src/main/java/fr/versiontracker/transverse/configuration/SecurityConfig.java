@@ -26,15 +26,11 @@ public class SecurityConfig {
     SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
                 .authorizeHttpRequests((authorize) -> authorize
-                        .mvcMatchers("/", "/public/**").permitAll()
+                        .mvcMatchers("/css/**", "/error").permitAll()
                         .anyRequest().authenticated()
                 )
-//                .oauth2Login(oauth2Login ->
-//                        oauth2Login.loginPage("/oauth2/authorization/rushs-client-oidc"))
-////                        oauth2Login.loginPage("/login/oauth2/code/rushs-client-oidc"))
-//                .oauth2Client(withDefaults());
-                .formLogin(withDefaults())
-                .oauth2Login(withDefaults())
+                .oauth2Login(oauth2Login ->
+                        oauth2Login.loginPage("/oauth2/authorization/login-client-oidc"))
                 .oauth2Client(withDefaults());
         return http.build();
     }
