@@ -26,11 +26,13 @@ public class SecurityConfig {
     SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
                 .authorizeHttpRequests((authorize) -> authorize
-                        .mvcMatchers("/css/**", "/error").permitAll()
+                        .mvcMatchers("/css/**", "/error","/").permitAll()
                         .anyRequest().authenticated()
                 )
+//                .formLogin(withDefaults())
                 .oauth2Login(oauth2Login ->
                         oauth2Login.loginPage("/oauth2/authorization/login-client-oidc"))
+//                .oauth2Login(withDefaults())
                 .oauth2Client(withDefaults());
         return http.build();
     }
