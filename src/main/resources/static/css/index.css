@@ -1,211 +1,294 @@
-/*Rappel : https://www.alsacreations.com/article/lire/1388-CSS3-Grid-Layout.html */
+/* https://www.alsacreations.com/article/lire/1388-CSS3-Grid-Layout.html */
+/* https://developer.mozilla.org/en-US/docs/Web/CSS/Containing_block */
+/* https://www.colorhunt.co/palette/000957344cb7577bc1ebe645 */
+
 /* Layout */
+    {box-sizing: border-box}
+
     .container {
-      display: grid;
-      grid-template-columns: 10em 1fr;
-      grid-template-rows: auto 1fr auto;
+        display: grid;
+        grid-template-columns: 10em 1fr;
+        grid-template-rows: auto 1fr auto;
     }
 
     header {
-      grid-column: 1 / span 2;
-      grid-row: 1;
+        grid-column: 1 / span 2;
+        grid-row: 1;
     }
 
     nav {
-      grid-column: 1;
-      grid-row: 2;
+        grid-column: 1;
+        grid-row: 2;
     }
 
-    aside {
-      grid-column: 2;
-      grid-row: 2;
+    main {
+        grid-column: 2;
+        grid-row: 2;
     }
 
     footer {
-      grid-column: 1 / span 2;
-      grid-row: 3;
+        grid-column: 1 / span 2;
+        grid-row: 3;
     }
 
 
-/* Decoration */
-* {box-sizing: border-box}
+/* Body */
     body {
         font-family: helvetica, arial, sans-serif;
         font-size: 1em;
     }
 
-    .container {
-    }
-
-    aside, header, footer {
+    header, footer, main {
         padding: 10px;
     }
 
-    nav {
-        background: dodgerblue;
+
+/* Header */
+    header {
+        background: #000957;
     }
 
-    aside {
-    }
-
-    footer {
-    }
-
-/*CSS header*/
-    header
-        {
-        height 120px;
-        background:blue;
-        }
-
-    #header h1
-        {
-        color:white;
+    #header h1 {
+        color: #FFF;
         text-align: center;
-        }
+    }
 
-/*CSS Menu*/
+
+/* Nav */
+    nav {
+        background: #344CB7;
+    }
+
     #navigation {
-        list-style: none;
         margin: 0;
         padding: 0;
     }
 
+    #navigation ul {
+    }
+
     #navigation li {
+        list-style: none;
     }
 
     #navigation li a {
-      display: block ;
-      font: 1em;
-      line-height: 1em ;
-      text-align: center ;
-      text-decoration: none ;
-      padding: 4px 0 ;
+        display: block ;
+        font: 1em;
+        color: #D3D3D3;
+        line-height: 1em ;
+        text-align: start;
+        text-decoration: none ;
+        padding: 4px 0;
+        padding-left: 15px;
+    }
+
+    .nested li a {
     }
 
     #navigation li a:hover, #navigation li a:focus, #navigation li a:active {
-      color: #fff;
+        color: #FFF;
     }
 
-/*CSS pour triApplication*/
-    li
-        {
-            list-style: none;
-        }
+/* JS */
+    .nested {
+      display: none;
+    }
 
-    #rectangle
-        {
-            width:600px;
-            height:25px;
-            background:yellow;
-            border:2px solid #000;
-            top:0;
-            left:0;
-        }
+    .active {
+      display: block;
+      padding-left: 7px;
+    }
 
-   #rectangle li {
-            vertical-align:middle;
-       }
 
-    #rectangle2
-        {
-            width:600px;
-            height:100px;
-            border:2px solid #000;
-            top:0;
-            left:0;
-        }
+ /* Index */
+    #index{
+        padding-left: 40px;
+    }
 
-/*CSS contact*/
-    h1{
-      text-align: center;
+    #presentation {
+    }
+
+    #presentation #nomFichier{
+        font-weight: bold;
+    }
+
+    #presentation li {
+        list-style: none;
+    }
+
+
+/* triApplication */
+    #titre{
+    }
+
+    #rectangle {
+        display: table-cell;
+        vertical-align: middle;
+        padding: 5px;
+        width:650px;
+        height:25px;
+        background:#EBE645;
+        font-weight: bold;
+        border:2px solid #000000;
+        border-bottom-width: 0;
+        top:0;
+        left:0;
+    }
+
+    #rectangle2 {
+        padding: 5px;
+        width:650px;
+        height:100px;
+        border:2px solid #000000;
+        top:0;
+        left:0;
+    }
+
+    #titre li {
+        list-style: none;
+    }
+
+    #rectangle li {
+        list-style: none;
+    }
+
+    #rectangle2 li {
+        list-style: none;
+    }
+
+/* triProject */
+    #annonce p {
+        padding-left : 40px;
+    }
+
+    #results {
+        margin-left: 80px;
+    }
+
+    #results table {
+        border-collapse: collapse;
+        border: 2px solid #000000;
+        letter-spacing: 1px;
+    }
+
+    #results thead {
+        background-color: #EBE645;
+        border: 2px solid #000000;
+    }
+
+    #results tr {
+        border: 1px solid #000000;
+    }
+
+    #results th {
+        width:250px;
+        height:50px;
+        border: 1px solid #D3D3D3;
+        padding: 5px;
+    }
+
+    #results td {
+        text-align: center;
+        border: 1px solid #D3D3D3;
+        padding: 5px;
+        width:250px;
+        height:50px;
+    }
+
+    #results tr:nth-child(even) {
+        background-color: #EEE;
+    }
+
+
+/* contact */
+    h1 {
+        text-align: center;
     }
 
     .form-style {
-      margin:10px auto;
-      width: 400px;
-      padding: 20px 12px 10px 20px;
-      font: 14px "Lucida Sans Unicode", "Lucida Grande", sans-serif;
+        margin:10px auto;
+        width: 400px;
+        /*padding: 20px 12px 10px 20px;*/
     }
 
     .form-style td {
-      padding: 0;
-      display: block;
-      list-style: none;
-      margin: 10px 0 0 0;
+        padding: 0;
+        display: block;
+        list-style: none;
+        margin: 10px 0 0 0;
     }
 
-    .form-style label{
-      margin:0 0 3px 0;
-      padding:0px;
-      display:block;
-      font-weight: bold;
+    .form-style label {
+        margin:0 0 3px 0;
+        padding:0px;
+        display:block;
+        font-weight: bold;
     }
 
-    .form-style .required{
-      color:red;
+    .form-style .required {
+        color:red;
     }
 
-    .form-style input[type=submit], .form-style input[type=reset]{
-      background: #4eb5f1;
-      padding: 8px 15px 8px 15px;
-      border: none;
-      color: #fff;
+    .form-style input[type=submit], .form-style input[type=reset] {
+        background: #344CB7;
+        padding: 8px 15px 8px 15px;
+        border: none;
+        color: #fff;
     }
 
-    .form-style input[type=submit]:hover, .form-style input[type=reset]:hover{
-      background: #4eb5f1;
-      box-shadow:none;
-      -moz-box-shadow:none;
-      -webkit-box-shadow:none;
+    .form-style input[type=submit]:hover, .form-style input[type=reset]:hover {
+        background: #344CB7; /*#4eb5f1*/
+        box-shadow:none;
+            -moz-box-shadow:none;
+            -webkit-box-shadow:none;
     }
 
-    .form-style .field-textarea{
-      height: 100px;
+    .form-style .field-textarea {
+        height: 100px;
     }
 
     .form-style input[type=text],
 
     .form-style input[type=email],
 
-    textarea{
-      box-sizing: border-box;
-      -webkit-box-sizing: border-box;
-      -moz-box-sizing: border-box;
-      border:1px solid #BEBEBE;
-      padding: 7px;
-      margin:0px;
-      -webkit-transition: all 0.30s ease-in-out;
-      -moz-transition: all 0.30s ease-in-out;
-      -ms-transition: all 0.30s ease-in-out;
-      -o-transition: all 0.30s ease-in-out;
-      outline: none;
+    textarea {
+        box-sizing: border-box;
+            -webkit-box-sizing: border-box;
+            -moz-box-sizing: border-box;
+        border:1px solid #BEBEBE;
+        padding: 7px;
+        margin:0px;
+            -webkit-transition: all 0.30s ease-in-out;
+            -moz-transition: all 0.30s ease-in-out;
+            -ms-transition: all 0.30s ease-in-out;
+            -o-transition: all 0.30s ease-in-out;
+        outline: none;
     }
 
-    .form-style .long{
-      width: 100%;
+    .form-style .long {
+        width: 100%;
     }
 
     .form-style input[type=text]:focus,
 
     .form-style input[type=email]:focus,
 
-    .form-style textarea:focus{
-      -moz-box-shadow: 0 0 8px #88D5E9;
-      -webkit-box-shadow: 0 0 8px #88D5E9;
-      box-shadow: 0 0 8px #88D5E9;
-      border: 1px solid #88D5E9;
+    .form-style textarea:focus {
+            -moz-box-shadow: 0 0 8px #88D5E9;
+            -webkit-box-shadow: 0 0 8px #88D5E9;
+        box-shadow: 0 0 8px #88D5E9;
+        border: 1px solid #88D5E9;
     }
 
-    .error{
-      color: #D8000C;
-      background-color: #FFBABA;
+    .error {
+        color: #D8000C;
+        background-color: #FFBABA;
     }
 
-/*CSS footer*/
-    footer
-        {
-        background:blue;
+
+/* footer */
+    footer {
+        background: #000957;
         color:white;
         text-align: center;
-        }
+    }

@@ -1,17 +1,20 @@
 package fr.versiontracker.traitement.service;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import fr.versiontracker.traitement.modele.ApplicationConfiguration;
-import fr.versiontracker.traitement.modele.Dependency;
-import fr.versiontracker.traitement.modele.MavenDependency;
-import fr.versiontracker.traitement.modele.ProjectConfiguration;
+import fr.versiontracker.traitement.modele.*;
 import fr.versiontracker.traitement.service.maven.MavenExtractionService;
 import fr.versiontracker.traitement.service.npm.NPMExtractionService;
 import fr.versiontracker.transverse.exception.NonReadableApplicationConfigurationException;
 import fr.versiontracker.transverse.exception.NonReadableDependencyFileException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.web.client.HttpClientErrorException;
+import org.springframework.web.client.HttpServerErrorException;
+import org.springframework.web.client.RestTemplate;
+import org.springframework.web.reactive.function.client.WebClient;
 
 import java.io.File;
 import java.io.IOException;
@@ -19,46 +22,64 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 @Slf4j
 public class ApplicationService {
 
+    public static final String CONTENT = "/content";
     @Autowired
     MavenExtractionService mavenExtractionService;
 
     @Autowired
     NPMExtractionService npmExtractionService;
 
+    @Autowired
+    RestTemplate restTemplate;
+
     public List<ApplicationConfiguration> getInfoApplication() throws NonReadableApplicationConfigurationException, NonReadableDependencyFileException {
 
-        List<URL> applicationListURLs = new ArrayList<>();
-        try {
-            applicationListURLs.add(new URL("file:///C:/CODE/Java/XMLRush.json"));
-            applicationListURLs.add(new URL("file:///C:/CODE/Java/XMLRush1.json"));
-        } catch (MalformedURLException e) {
-            log.error("Erreur lors de la prise en compte d'une URL de fichier Rush", e);
+//        try {
+////            applicationListURLs.add(new URL("file:///C:/CODE/Java/XMLRush.json"));
+////            applicationListURLs.add(new URL("file:///C:/CODE/Java/XMLRush1.json"));
+//            applicationListURLs.add(new URL("http://localhost:8090/rushs/XMLRush.json/content"));
+//            applicationListURLs.add(new URL("http://localhost:8090/rushs/XMLRush1.json/content"));
+//        } catch (MalformedURLException e) {
+//            log.error("Erreur lors de la prise en compte d'une URL de fichier Rush", e);
+//        }
+
+        String rushsResourceUrl
+                = "http://localhost:8090/rushs/";
+        ResponseEntity<StringList> response
+                = restTemplate.getForEntity(rushsResourceUrl, StringList.class);
+        List<String> applicationFilenameList = null;
+        if ((response != null) && response.hasBody()) {
+            applicationFilenameList = response.getBody();
         }
 
         List<ApplicationConfiguration> listApplicationConfigurations = new ArrayList<>();
-
-        for (URL applicationListURL : applicationListURLs) {
-            String fileApplicationName = new File(applicationListURL.toString()).getName();
-            ApplicationConfiguration applicationConfiguration = this.getFileProjectInfo(applicationListURL);
-            applicationConfiguration.setFileApplicationName(fileApplicationName);
-            listApplicationConfigurations.add(applicationConfiguration);
+        if (applicationFilenameList != null) {
+            for (String applicationFilename : applicationFilenameList) {
+                ApplicationConfiguration applicationConfiguration = this.getFileProjectInfo(applicationFilename, rushsResourceUrl);
+                applicationConfiguration.setFileApplicationName(applicationFilename);
+                listApplicationConfigurations.add(applicationConfiguration);
+            }
         }
         return listApplicationConfigurations;
     }
 
-    private ApplicationConfiguration getFileProjectInfo(URL fileURL) throws NonReadableApplicationConfigurationException, NonReadableDependencyFileException {
+    private ApplicationConfiguration getFileProjectInfo(String fileName, String rushsResourceUrl) throws NonReadableApplicationConfigurationException, NonReadableDependencyFileException {
 
         ApplicationConfiguration applicationConfiguration = null;
-        ObjectMapper objectMapper = new ObjectMapper();
 
         try {
-            applicationConfiguration = objectMapper.readValue(fileURL, ApplicationConfiguration.class);
-        } catch (IOException e) {
+            ResponseEntity<ApplicationConfiguration> res = restTemplate.getForEntity(rushsResourceUrl + fileName + CONTENT, ApplicationConfiguration.class);
+            if ((res != null) && HttpStatus.OK.equals(res.getStatusCode())) {
+                applicationConfiguration = res.getBody();
+            };
+        } catch (HttpClientErrorException | HttpServerErrorException e) {
             log.error("Impossible de lire la configuration d'application", e);
             throw new NonReadableApplicationConfigurationException("Impossible de lire la configuration d'application", e);
         }

@@ -6,8 +6,6 @@ import fr.versiontracker.traitement.service.ApplicationService;
 import fr.versiontracker.transverse.exception.NonReadableApplicationConfigurationException;
 import fr.versiontracker.transverse.exception.NonReadableDependencyFileException;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.oauth2.client.OAuth2AuthorizedClient;
-import org.springframework.security.oauth2.client.annotation.RegisteredOAuth2AuthorizedClient;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -17,8 +15,6 @@ import org.springframework.web.reactive.function.client.WebClient;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
-import static org.springframework.security.oauth2.client.web.reactive.function.client.ServerOAuth2AuthorizedClientExchangeFilterFunction.oauth2AuthorizedClient;
 
 @Controller
 public class MainController {
@@ -92,16 +88,4 @@ public class MainController {
 
     private WebClient webClient;
 
-    @GetMapping(value = "/rushs")
-    public String[] getArticles(
-            @RegisteredOAuth2AuthorizedClient("rushs-client-authorization-code") OAuth2AuthorizedClient authorizedClient
-    ) {
-        return this.webClient
-                .get()
-                .uri("http://127.0.0.1:8090/rushs")
-                .attributes(oauth2AuthorizedClient(authorizedClient))
-                .retrieve()
-                .bodyToMono(String[].class)
-                .block();
-    }
 }

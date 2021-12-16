@@ -8,8 +8,10 @@
     <meta name="viewport"
           content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    /*manque lien JS*/
-    <link rel="stylesheet" type="text/css" th:href="@{  /css/index.css}" />
+    /*MANQUE JS CONTACT */
+    <link rel="stylesheet" type="text/css" th:href="@{ /css/index.css}" />
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+    <script type="module" th:src="@{/js/fold2.js}" /></script>
 </head>
 
 <body>
@@ -25,7 +27,7 @@
             <div th:insert="fragments/components :: menu"></div>
         </nav>
 
-        <aside>
+        <main>
             <h1>Formulaire de contact</h1>
             <form name="myForm" action="/file.php" onsubmit="return validateForm()" method="post">
                 <table class="form-style">
@@ -71,7 +73,7 @@
                     </tr>
                 </table>
             </form>
-        </aside>
+        </main>
 
         <footer>
             <div th:insert="fragments/components :: footer"></div>

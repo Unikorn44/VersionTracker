@@ -7,51 +7,71 @@
     <meta name="viewport"
           content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <!--<link rel="stylesheet" href="https://unpkg.com/simple-treeview/dist/treeview.vanilla.css">-->
+    <!--<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.15.4/css/all.css" integrity="sha384-DyZ88mC6Up2uqS4h/KRgHuoeGwBcD4Ng9SiP4dIRy0EXTlnuz47vAwmeGwVChigm" crossorigin="anonymous">-->
     <link rel="stylesheet" type="text/css" th:href="@{/css/index.css}" />
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+    <script type="module" th:src="@{/js/fold2.js}" /></script>
 </head>
 
 <body>
+
     <div class = container>
 
         <header>
             <div id="header">
-                <div th:insert="fragments/components :: header"></div>
+                <div th:insert="fragments/components :: header"> </div>
             </div>
         </header>
 
         <br>
+
         <nav>
-            <div th:insert="fragments/components :: menu"></div>
+            <div th:insert="fragments/components :: menu"> </div>
+
+            <!--<div id="tree"> </div>-->
+
         </nav>
+
         <br>
 
-        <aside>
-            <p>
-                Bienvenue, les fichiers suivants seront analysés :
-            </p>
+        <main>
+            <div id="index">
 
-            <ul th:each="listedApplication: ${listFileApplications}">
+                <p>
+                    Bienvenue, les fichiers suivants seront analysés :
+                </p>
 
-                <li th:text="'Nom du fichier :' + ${listedApplication.fileApplicationName}"></li>
-                <br>
-                <ul th:each="listedProject: ${listedApplication.listProjets}">
+                <div id="presentation">
+                    <ul th:each="listedApplication: ${listFileApplications}">
+                        <div id="nomFichier">
+                            <li th:text="'Nom du fichier :' + ${listedApplication.fileApplicationName}"></li>
+                            <li th:text="${listedApplication.fileApplicationName}">
+                        </div>
+                        <br>
+                        <ul th:each="listedProject: ${listedApplication.listProjets}">
 
-                    <div>
-                        <li th:text="'Type de données : ' + ${listedProject.name}"></li>
-                    </div>
-                    <div >
-                        <li>Dependances recherchées :</li>
-                        <ul th:each="trackedDependencyInfo: ${listedProject.trackedDependencyInfos}">
-                            <li th:text="'Dépendance : ' + ${trackedDependencyInfo.getDependency()} "></li>
+                            <div>
+                                <li th:text="'Type de données : ' + ${listedProject.name}"></li>
+                            </div>
+
+                            <div >
+                                <li>Dependances recherchées :</li>
+                                <ul th:each="trackedDependencyInfo: ${listedProject.trackedDependencyInfos}">
+                                    <li th:text="'Dépendance : ' + ${trackedDependencyInfo.getDependency()} "></li>
+                                </ul>
+                            </div>
+
+                            <br>
+
                         </ul>
-                    </div>
-                    <br>
 
-                </ul>
+                        <br>
+                    </ul>
+                </div>
 
-                <br>
-            </ul>
-        </aside>
+            </div>
+        </main>
 
         <br>
         <footer>

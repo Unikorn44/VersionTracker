@@ -3,23 +3,31 @@
 <head>
     <title>Version Tracker</title>
 </head>
+
 <body>
     <header th:fragment="header">
         <h1>Version tracker</h1>
     </header>
 
     <nav th:fragment="menu">
+
         <ul id="navigation">
             <li><a></a></li>
             <li><a th:href="@{/}">Homepage</a></li>
-            <li><a th:href="@{/triApplication}">Tri par application</a></li>
-            <li><a th:href="@{/triProject}">Tri par projet</a></li>
+            <li><span class="stuff"><a>Données</a></span>
+                <ul class="nested">
+                    <li><a th:href="@{/triApplication}">Tri par application</a></li>
+                    <li><a th:href="@{/triProject}">Tri par projet</a></li>
+                </ul>
+            </li>
+
             <li><a th:href="@{/contact}">Contact</a></li>
         </ul>
+
     </nav>
 
     <footer th:fragment="footer">
-        <p> 2021 KindOfSucks.com</p>
+        <p> P-H Dupont 2021</p>
     </footer>
 </body>
 </html>
