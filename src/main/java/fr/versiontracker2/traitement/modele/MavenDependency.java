@@ -1,4 +1,4 @@
-package fr.versiontracker.traitement.modele;
+package fr.versiontracker2.traitement.modele;
 
 import lombok.Getter;
 import lombok.Setter;

@@ -1,14 +1,13 @@
-package fr.versiontracker.api.controller;
+package fr.versiontracker2.api.controller;
 
-import fr.versiontracker.api.mapper.Mapper;
-import fr.versiontracker.api.ressource.FileApplication;
-import fr.versiontracker.traitement.service.ApplicationService;
-import fr.versiontracker.transverse.exception.NonReadableApplicationConfigurationException;
-import fr.versiontracker.transverse.exception.NonReadableDependencyFileException;
+import fr.versiontracker2.api.mapper.Mapper;
+import fr.versiontracker2.api.ressource.FileApplication;
+import fr.versiontracker2.traitement.service.ApplicationService;
+import fr.versiontracker2.transverse.exception.NonReadableApplicationConfigurationException;
+import fr.versiontracker2.transverse.exception.NonReadableDependencyFileException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.reactive.function.client.WebClient;
 

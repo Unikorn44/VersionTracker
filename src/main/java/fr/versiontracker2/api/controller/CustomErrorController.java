@@ -1,4 +1,4 @@
-package fr.versiontracker.api.controller;
+package fr.versiontracker2.api.controller;
 
 import org.springframework.boot.web.servlet.error.ErrorController;
 import org.springframework.stereotype.Controller;

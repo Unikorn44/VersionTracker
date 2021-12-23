@@ -1,11 +1,11 @@
-package fr.versiontracker.api.mapper;
+package fr.versiontracker2.api.mapper;
 
-import fr.versiontracker.api.ressource.FileApplication;
-import fr.versiontracker.api.ressource.Projet;
-import fr.versiontracker.api.ressource.TrackedDependencyInfo;
-import fr.versiontracker.traitement.modele.ApplicationConfiguration;
-import fr.versiontracker.traitement.modele.Dependency;
-import fr.versiontracker.traitement.modele.ProjectConfiguration;
+import fr.versiontracker2.api.ressource.FileApplication;
+import fr.versiontracker2.api.ressource.Projet;
+import fr.versiontracker2.api.ressource.TrackedDependencyInfo;
+import fr.versiontracker2.traitement.modele.ApplicationConfiguration;
+import fr.versiontracker2.traitement.modele.Dependency;
+import fr.versiontracker2.traitement.modele.ProjectConfiguration;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;

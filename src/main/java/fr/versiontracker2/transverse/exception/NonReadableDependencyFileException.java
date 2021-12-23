@@ -1,4 +1,4 @@
-package fr.versiontracker.transverse.exception;
+package fr.versiontracker2.transverse.exception;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ResponseStatus;

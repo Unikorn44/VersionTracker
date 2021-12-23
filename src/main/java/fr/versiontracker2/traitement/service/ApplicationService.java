@@ -1,11 +1,10 @@
-package fr.versiontracker.traitement.service;
+package fr.versiontracker2.traitement.service;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-import fr.versiontracker.traitement.modele.*;
-import fr.versiontracker.traitement.service.maven.MavenExtractionService;
-import fr.versiontracker.traitement.service.npm.NPMExtractionService;
-import fr.versiontracker.transverse.exception.NonReadableApplicationConfigurationException;
-import fr.versiontracker.transverse.exception.NonReadableDependencyFileException;
+import fr.versiontracker2.traitement.modele.*;
+import fr.versiontracker2.traitement.service.maven.MavenExtractionService;
+import fr.versiontracker2.traitement.service.npm.NPMExtractionService;
+import fr.versiontracker2.transverse.exception.NonReadableApplicationConfigurationException;
+import fr.versiontracker2.transverse.exception.NonReadableDependencyFileException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -14,16 +13,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.HttpServerErrorException;
 import org.springframework.web.client.RestTemplate;
-import org.springframework.web.reactive.function.client.WebClient;
 
-import java.io.File;
-import java.io.IOException;
-import java.net.MalformedURLException;
-import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
-import java.util.stream.Collectors;
 
 @Service
 @Slf4j
@@ -39,16 +31,13 @@ public class ApplicationService {
     @Autowired
     RestTemplate restTemplate;
 
+    /**
+     * Récupère la liste des applications puis les informations sur celles-ci
+     * @return Liste des configurations d'applications
+     * @throws NonReadableApplicationConfigurationException si une configuration n'a pas pas pu être exploitée
+     * @throws NonReadableDependencyFileException si une dépendance n'a pas pu être exploitée
+     */
     public List<ApplicationConfiguration> getInfoApplication() throws NonReadableApplicationConfigurationException, NonReadableDependencyFileException {
-
-//        try {
-////            applicationListURLs.add(new URL("file:///C:/CODE/Java/XMLRush.json"));
-////            applicationListURLs.add(new URL("file:///C:/CODE/Java/XMLRush1.json"));
-//            applicationListURLs.add(new URL("http://localhost:8090/rushs/XMLRush.json/content"));
-//            applicationListURLs.add(new URL("http://localhost:8090/rushs/XMLRush1.json/content"));
-//        } catch (MalformedURLException e) {
-//            log.error("Erreur lors de la prise en compte d'une URL de fichier Rush", e);
-//        }
 
         String rushsResourceUrl
                 = "http://localhost:8090/rushs/";
@@ -70,6 +59,14 @@ public class ApplicationService {
         return listApplicationConfigurations;
     }
 
+    /**
+     *
+     * @param fileName nom du fichier
+     * @param rushsResourceUrl
+     * @return
+     * @throws NonReadableApplicationConfigurationException
+     * @throws NonReadableDependencyFileException
+     */
     private ApplicationConfiguration getFileProjectInfo(String fileName, String rushsResourceUrl) throws NonReadableApplicationConfigurationException, NonReadableDependencyFileException {
 
         ApplicationConfiguration applicationConfiguration = null;

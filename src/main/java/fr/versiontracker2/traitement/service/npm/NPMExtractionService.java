@@ -1,12 +1,12 @@
-package fr.versiontracker.traitement.service.npm;
+package fr.versiontracker2.traitement.service.npm;
 
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import fr.versiontracker.traitement.modele.Dependency;
-import fr.versiontracker.traitement.modele.NPMDependency;
-import fr.versiontracker.transverse.exception.NonReadableDependencyFileException;
+import fr.versiontracker2.traitement.modele.Dependency;
+import fr.versiontracker2.traitement.modele.NPMDependency;
+import fr.versiontracker2.transverse.exception.NonReadableDependencyFileException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 

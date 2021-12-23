@@ -1,4 +1,4 @@
-package fr.versiontracker.api.ressource;
+package fr.versiontracker2.api.ressource;
 
 import lombok.Data;
 
