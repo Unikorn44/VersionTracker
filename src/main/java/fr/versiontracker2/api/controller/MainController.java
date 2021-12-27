@@ -2,14 +2,19 @@ package fr.versiontracker2.api.controller;
 
 import fr.versiontracker2.api.mapper.Mapper;
 import fr.versiontracker2.api.ressource.FileApplication;
+import fr.versiontracker2.api.ressource.MailContact;
 import fr.versiontracker2.traitement.service.ApplicationService;
 import fr.versiontracker2.transverse.exception.NonReadableApplicationConfigurationException;
 import fr.versiontracker2.transverse.exception.NonReadableDependencyFileException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
+import org.springframework.security.oauth2.client.OAuth2AuthorizedClient;
+import org.springframework.security.oauth2.client.annotation.RegisteredOAuth2AuthorizedClient;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.reactive.function.client.WebClient;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 
 import java.util.HashMap;
 import java.util.List;
@@ -26,28 +31,24 @@ public class MainController {
     @Autowired
     Mapper mapper;
 
-    @RequestMapping(value = {"/", "/index"})
-    public String index(Model model) throws NonReadableApplicationConfigurationException, NonReadableDependencyFileException {
-
-        List<FileApplication> listFileApplications = mapper.transformeModeleEnRessource(applicationService.getInfoApplication());
-        model.addAttribute(LIST_FILE_APPLICATIONS, listFileApplications);
-
+    @GetMapping(value = {"/", "/index"})
+    public String index(Model model) {
         return "index";
     }
 
-    @RequestMapping(value = {"triApplication"})
-    public String triApplication(Model model) throws NonReadableApplicationConfigurationException, NonReadableDependencyFileException {
+    @GetMapping("triApplication")
+    public String triApplication(Model model, @RegisteredOAuth2AuthorizedClient("login-client") OAuth2AuthorizedClient authorizedClient) throws NonReadableApplicationConfigurationException, NonReadableDependencyFileException {
 
-        List<FileApplication> listFileApplications = mapper.transformeModeleEnRessource(applicationService.getInfoApplication());
+        List<FileApplication> listFileApplications = mapper.transformeModeleEnRessource(applicationService.getInfoApplication(authorizedClient));
         model.addAttribute(LIST_FILE_APPLICATIONS, listFileApplications);
 
         return "triApplication";
     }
 
-    @RequestMapping(value = {"triProject"})
-    public String triProject(Model model) throws NonReadableApplicationConfigurationException, NonReadableDependencyFileException {
+    @GetMapping("triProject")
+    public String triProject(Model model, @RegisteredOAuth2AuthorizedClient("login-client") OAuth2AuthorizedClient authorizedClient) throws NonReadableApplicationConfigurationException, NonReadableDependencyFileException {
 
-        List<FileApplication> listFileApplications = mapper.transformeModeleEnRessource(applicationService.getInfoApplication());
+        List<FileApplication> listFileApplications = mapper.transformeModeleEnRessource(applicationService.getInfoApplication(authorizedClient));
 
         Map<String,Map<String,Map<String,String>>> listDependencies = new HashMap<>();
 
@@ -80,11 +81,14 @@ public class MainController {
         return "triProject";
     }
 
-    @RequestMapping(value = {"/contact"})
+    @GetMapping("/contact")
     public String contact(Model model) {
         return "contact";
     }
 
-    private WebClient webClient;
-
+    @PostMapping(value = "/mailContact", consumes = {MediaType.APPLICATION_FORM_URLENCODED_VALUE} )
+    public String contact(MailContact mailContact) {
+        System.out.println(mailContact);
+        return "index";
+    }
 }

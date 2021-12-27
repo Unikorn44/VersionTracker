@@ -7,6 +7,8 @@ import org.apache.maven.model.Dependency;
 import org.apache.maven.model.Model;
 import org.apache.maven.model.io.xpp3.MavenXpp3Reader;
 import org.codehaus.plexus.util.xml.pull.XmlPullParserException;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.oauth2.client.OAuth2AuthorizedClient;
 import org.springframework.stereotype.Service;
 import org.springframework.web.reactive.function.client.WebClient;
 
@@ -16,11 +18,16 @@ import java.util.List;
 import java.util.Optional;
 import java.util.Properties;
 
+import static org.springframework.security.oauth2.client.web.reactive.function.client.ServerOAuth2AuthorizedClientExchangeFilterFunction.oauth2AuthorizedClient;
+
 @Service
 @Slf4j
 public class MavenExtractionService {
 
     public static final String N_EXISTE_PAS = "n'existe pas";
+
+    @Autowired
+    private WebClient webClient;
 
     public MavenDependency extractMavenDependencyFrom(String valueTrackedDependency) {
         MavenDependency mavenDependency = new MavenDependency();
@@ -30,15 +37,16 @@ public class MavenExtractionService {
         return mavenDependency;
     }
 
-    public String getVersionWithPP3(String valueUrl, MavenDependency mavenDependency) throws NonReadableDependencyFileException {
+    public String getVersionWithPP3(String valueUrl, MavenDependency mavenDependency, OAuth2AuthorizedClient authorizedClient) throws NonReadableDependencyFileException {
 
         Model fileModel = null;
 
         if (valueUrl.matches("http.*")) {
 
-            WebClient webClient = WebClient.create();
+//            WebClient webClient = WebClient.create();
             String pomContent = webClient.get()
                     .uri(valueUrl)
+                    .attributes(oauth2AuthorizedClient(authorizedClient))
                     .retrieve()
                     .bodyToMono(String.class)
                     .block();

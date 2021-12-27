@@ -8,7 +8,11 @@
         </encoder>
     </appender>
 
-    <root level="debug">
+    <logger name="org.apache.tomcat.util.net" level="INFO"/>
+    <logger name="org.apache.catalina" level="INFO"/>
+    <logger name="org.thymeleaf" level="WARN"/>
+
+    <root level="info">
         <appender-ref ref="STDOUT" />
     </root>
 </configuration>

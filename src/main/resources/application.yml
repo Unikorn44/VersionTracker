@@ -1,0 +1,29 @@
+server:
+  port: 8080
+  error:
+    whitelabel:
+      enabled: false
+
+spring:
+  thymeleaf:
+    cache: false
+  security:
+    oauth2:
+      client:
+        registration:
+          login-client:
+            provider: spring
+            client-id: login-client
+            client-secret: openid-connect
+            client-authentication-method: client_secret_basic
+            authorization-grant-type: authorization_code
+            redirect-uri: http://127.0.0.1:8080/login/oauth2/code/login-client
+            scope: openid,profile,rushs:read
+            client-name: Spring
+        provider:
+          spring:
+            authorization-uri: http://auth-server:9000/oauth2/authorize
+            token-uri: http://auth-server:9000/oauth2/token
+            jwk-set-uri: http://auth-server:9000/oauth2/jwks
+
+resource-uri: http://localhost:8090

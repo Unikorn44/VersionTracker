@@ -9,6 +9,7 @@
         display: grid;
         grid-template-columns: 10em 1fr;
         grid-template-rows: auto 1fr auto;
+        height: 98vh;
     }
 
     header {
