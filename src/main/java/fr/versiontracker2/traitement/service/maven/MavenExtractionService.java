@@ -1,8 +1,14 @@
 package fr.versiontracker2.traitement.service.maven;
 
-import fr.versiontracker2.traitement.modele.MavenDependency;
-import fr.versiontracker2.transverse.exception.NonReadableDependencyFileException;
-import lombok.extern.slf4j.Slf4j;
+import static org.springframework.security.oauth2.client.web.reactive.function.client.ServerOAuth2AuthorizedClientExchangeFilterFunction.oauth2AuthorizedClient;
+
+import java.io.FileReader;
+import java.io.IOException;
+import java.io.StringReader;
+import java.util.List;
+import java.util.Optional;
+import java.util.Properties;
+
 import org.apache.maven.model.Dependency;
 import org.apache.maven.model.Model;
 import org.apache.maven.model.io.xpp3.MavenXpp3Reader;
@@ -12,13 +18,9 @@ import org.springframework.security.oauth2.client.OAuth2AuthorizedClient;
 import org.springframework.stereotype.Service;
 import org.springframework.web.reactive.function.client.WebClient;
 
-import java.io.*;
-
-import java.util.List;
-import java.util.Optional;
-import java.util.Properties;
-
-import static org.springframework.security.oauth2.client.web.reactive.function.client.ServerOAuth2AuthorizedClientExchangeFilterFunction.oauth2AuthorizedClient;
+import fr.versiontracker2.traitement.modele.MavenDependency;
+import fr.versiontracker2.transverse.exception.NonReadableDependencyFileException;
+import lombok.extern.slf4j.Slf4j;
 
 @Service
 @Slf4j

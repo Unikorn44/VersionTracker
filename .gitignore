@@ -31,3 +31,7 @@ build/
 
 ### VS Code ###
 .vscode/
+
+### Eclipse ###
+.project
+.settings

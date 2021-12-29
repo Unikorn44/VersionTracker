@@ -1,9 +1,10 @@
 package fr.versiontracker2.traitement.modele;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import lombok.Data;
-
 import java.util.List;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
+import lombok.Data;
 
 @Data
 public class ProjectConfiguration {

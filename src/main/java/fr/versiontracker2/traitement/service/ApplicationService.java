@@ -1,25 +1,27 @@
 package fr.versiontracker2.traitement.service;
 
-import fr.versiontracker2.traitement.modele.*;
+import static org.springframework.security.oauth2.client.web.reactive.function.client.ServerOAuth2AuthorizedClientExchangeFilterFunction.oauth2AuthorizedClient;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.oauth2.client.OAuth2AuthorizedClient;
+import org.springframework.stereotype.Service;
+import org.springframework.web.client.HttpClientErrorException;
+import org.springframework.web.client.HttpServerErrorException;
+import org.springframework.web.reactive.function.client.WebClient;
+
+import fr.versiontracker2.traitement.modele.ApplicationConfiguration;
+import fr.versiontracker2.traitement.modele.Dependency;
+import fr.versiontracker2.traitement.modele.MavenDependency;
+import fr.versiontracker2.traitement.modele.ProjectConfiguration;
+import fr.versiontracker2.traitement.modele.StringList;
 import fr.versiontracker2.traitement.service.maven.MavenExtractionService;
 import fr.versiontracker2.traitement.service.npm.NPMExtractionService;
 import fr.versiontracker2.transverse.exception.NonReadableApplicationConfigurationException;
 import fr.versiontracker2.transverse.exception.NonReadableDependencyFileException;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
-import org.springframework.security.oauth2.client.OAuth2AuthorizedClient;
-import org.springframework.security.oauth2.client.annotation.RegisteredOAuth2AuthorizedClient;
-import org.springframework.stereotype.Service;
-import org.springframework.web.client.HttpClientErrorException;
-import org.springframework.web.client.HttpServerErrorException;
-import org.springframework.web.client.RestTemplate;
-import org.springframework.web.reactive.function.client.WebClient;
-
-import java.util.ArrayList;
-import java.util.List;
-import static org.springframework.security.oauth2.client.web.reactive.function.client.ServerOAuth2AuthorizedClientExchangeFilterFunction.oauth2AuthorizedClient;
 
 @Service
 @Slf4j
