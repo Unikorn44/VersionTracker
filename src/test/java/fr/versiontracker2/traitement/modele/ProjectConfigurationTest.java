@@ -9,10 +9,10 @@ import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
 @SpringBootTest
-public class ProjectConfigurationTest {
+class ProjectConfigurationTest {
 
     @Test
-    public void gettersAndSettersTest() {
+    void gettersAndSettersTest() {
 
         List<String> trackedDependencies = new ArrayList<>();
         trackedDependencies.add("td1");

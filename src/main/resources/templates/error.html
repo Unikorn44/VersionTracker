@@ -9,30 +9,32 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <link rel="stylesheet" type="text/css" th:href="@{/css/index.css}" />
     <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
-    <script type="module" th:src="@{/js/fold2.js}" /></script>
+    <script type="module" th:src="@{/js/fold2.js}"></script>
 </head>
 
 <body>
     <div class = container>
-
         <header>
             <div id="header">
                 <div th:insert="fragments/components :: header"></div>
             </div>
+            <section aria-label="Breadcrumb" class="breadcrumb" role="navigation">
+		    	<ul id="breadcrumb">
+			        <li><a href="/">Home</a></li>
+			        <li>Error</li>
+		    	</ul>
+			</section>
         </header>
-
         <br>
         <nav>
             <div th:insert="fragments/components :: menu"></div>
         </nav>
         <br>
-
-        <main>
+         <main role="main">
             <h2>
                 Une erreur s'est produite, veuillez vérifier vos sources.
             </h2>
         </main>
-
         <br>
         <footer>
             <div th:insert="fragments/components :: footer"></div>

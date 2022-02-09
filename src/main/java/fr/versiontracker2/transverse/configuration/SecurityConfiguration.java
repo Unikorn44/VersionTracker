@@ -34,13 +34,12 @@ public class SecurityConfiguration {
                 .and()
                 .oauth2Login(Customizer.withDefaults())
                 .oauth2Client();
-        return (SecurityFilterChain)http.build();
-    }//.antMatchers( "/contact/**", "/triApplication/**", "/triProject/**").authenticated()
+        return http.build();
+    }
 
     @Bean
     InMemoryClientRegistrationRepository clientRegistrationRepository(OAuth2ClientProperties properties) {
-        List<ClientRegistration> registrations = new ArrayList(OAuth2ClientPropertiesRegistrationAdapter.getClientRegistrations(properties).values());
-        System.out.println(registrations);
+        List<ClientRegistration> registrations = new ArrayList<>(OAuth2ClientPropertiesRegistrationAdapter.getClientRegistrations(properties).values());
         return new InMemoryClientRegistrationRepository(registrations);
     }
 

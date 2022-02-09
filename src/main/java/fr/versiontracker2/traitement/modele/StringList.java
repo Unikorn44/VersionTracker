@@ -12,4 +12,5 @@ import lombok.ToString;
 @ToString(callSuper = true)
 @EqualsAndHashCode(callSuper = true)
 public class StringList extends ArrayList<String> {
+	private static final long serialVersionUID = -7281878506041521559L;
 }

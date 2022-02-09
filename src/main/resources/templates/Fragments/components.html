@@ -5,29 +5,32 @@
 </head>
 
 <body>
-    <header th:fragment="header">
+    <header th:fragment="header" role="banner">
         <h1>Version tracker</h1>
     </header>
 
-    <nav th:fragment="menu">
-
+    <nav th:fragment="menu" role="navigation" class="vertical">
         <ul id="navigation">
             <li><a></a></li>
             <li><a th:href="@{/}">Homepage</a></li>
-            <li><span class="stuff"><a>Données</a></span>
+            <li><span class="stuff"><a>Donn&eacute;es</a></span>
                 <ul class="nested">
                     <li><a th:href="@{/triApplication}">Tri par application</a></li>
                     <li><a th:href="@{/triProject}">Tri par projet</a></li>
                 </ul>
             </li>
-
             <li><a th:href="@{/contact}">Contact</a></li>
         </ul>
-
     </nav>
 
-    <footer th:fragment="footer">
-        <p> P-H Dupont 2021</p>
+    <footer th:fragment="footer" role="contentinfo">
+    	<p>
+    		<a href="https://www.wildcodeschool.com/fr-FR" target="blanck">
+    			<img class="logo" title="Lien vers le site de la WCS" src="img/logo.png" alt="Logo Wild Code School" />
+    		</a>
+    	</p>
+        <p> P-H Dupont 2021</p>        
     </footer>
+    
 </body>
 </html>

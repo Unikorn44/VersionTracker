@@ -3,8 +3,6 @@
 /* https://www.colorhunt.co/palette/000957344cb7577bc1ebe645 */
 
 /* Layout */
-    {box-sizing: border-box}
-
     .container {
         display: grid;
         grid-template-columns: 10em 1fr;
@@ -54,6 +52,47 @@
         text-align: center;
     }
 
+/*Ariane*/
+
+	.breadcrumb ul {
+	    display: flex;
+	    margin: 0px;
+	    padding-left: 200px;
+	}
+	    
+	.breadcrumb li::before {
+	    content: ">";
+	    padding-right: 15px;
+	}
+	    
+	.breadcrumb li:first-child::before {
+	    content: "";
+	    padding-right: 0px;
+	}
+	
+    #breadcrumb li, #breadcrumb li a {
+        list-style: none;
+        font: 1em;
+        color: #D3D3D3;
+        line-height: 1em ;
+        text-align: start;
+        padding: 4px 0;
+        padding-left: 15px;
+    }
+    
+    #breadcrumb li a {
+         text-decoration: none ;
+        padding: 4px 0;
+    }
+
+  	#breadcrumb li:first-child, #breadcrumb li:first-child a {
+	    padding-left: 0px;
+	}
+
+    #breadcrumb li a:hover, #navigation li a:focus, #navigation li a:active {
+        color: #FFF;
+    }
+	
 
 /* Nav */
     nav {
@@ -63,9 +102,6 @@
     #navigation {
         margin: 0;
         padding: 0;
-    }
-
-    #navigation ul {
     }
 
     #navigation li {
@@ -81,9 +117,6 @@
         text-decoration: none ;
         padding: 4px 0;
         padding-left: 15px;
-    }
-
-    .nested li a {
     }
 
     #navigation li a:hover, #navigation li a:focus, #navigation li a:active {
@@ -106,9 +139,6 @@
         padding-left: 40px;
     }
 
-    #presentation {
-    }
-
     #presentation #nomFichier{
         font-weight: bold;
     }
@@ -119,8 +149,6 @@
 
 
 /* triApplication */
-    #titre{
-    }
 
     #rectangle {
         display: table-cell;
@@ -205,18 +233,29 @@
     h1 {
         text-align: center;
     }
+    
+    #fieldset{
+    	width:276px;
+    	margin-left: auto;
+    	margin-right: auto;
+    }
+    
+    legend{
+    	display: none;
+    }
 
     .form-style {
         margin:10px auto;
         width: 400px;
-        /*padding: 20px 12px 10px 20px;*/
+        display: flex;
+        flex-direction: column;
     }
 
-    .form-style td {
+    .form-style div {
         padding: 0;
         display: block;
         list-style: none;
-        margin: 10px 0 0 0;
+        margin: 15px 0 5px 0;
     }
 
     .form-style label {
@@ -227,18 +266,24 @@
     }
 
     .form-style .required {
-        color:red;
+        color: #FF0000;
+    }
+    
+    .form-style .commands {
+        display: flex;
+        flex-direction: row;
+        justify-content : space-evenly;
     }
 
     .form-style input[type=submit], .form-style input[type=reset] {
         background: #344CB7;
         padding: 8px 15px 8px 15px;
         border: none;
-        color: #fff;
+        color: #FFF;
     }
 
     .form-style input[type=submit]:hover, .form-style input[type=reset]:hover {
-        background: #344CB7; /*#4eb5f1*/
+        background: #344CB7;
         box-shadow:none;
             -moz-box-shadow:none;
             -webkit-box-shadow:none;
@@ -260,9 +305,10 @@
         padding: 7px;
         margin:0px;
             -webkit-transition: all 0.30s ease-in-out;
-            -moz-transition: all 0.30s ease-in-out;
-            -ms-transition: all 0.30s ease-in-out;
-            -o-transition: all 0.30s ease-in-out;
+               -moz-transition: all 0.30s ease-in-out;
+                -ms-transition: all 0.30s ease-in-out;
+                 -o-transition: all 0.30s ease-in-out;
+		            transition: all 0.30s ease-in-out;
         outline: none;
     }
 
@@ -275,15 +321,21 @@
     .form-style input[type=email]:focus,
 
     .form-style textarea:focus {
-            -moz-box-shadow: 0 0 8px #88D5E9;
-            -webkit-box-shadow: 0 0 8px #88D5E9;
-        box-shadow: 0 0 8px #88D5E9;
-        border: 1px solid #88D5E9;
+            -moz-box-shadow: 0 0 8px #344CB7;
+         -webkit-box-shadow: 0 0 8px #344CB7;
+                 box-shadow: 0 0 8px #344CB7;
+        border: 1px solid #344CB7;
     }
 
     .error {
         color: #D8000C;
         background-color: #FFBABA;
+    }
+    
+    #champ {
+        color: #FF0000;
+        margin-block-start: 0;
+        margin-block-end: 0;
     }
 
 
@@ -293,3 +345,8 @@
         color:white;
         text-align: center;
     }
+    
+    footer .logo {
+    	height: 4em;
+    }
+    

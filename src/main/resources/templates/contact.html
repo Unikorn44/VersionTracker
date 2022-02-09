@@ -2,16 +2,16 @@
 <html xmlns:th="http://www.thymeleaf.org" lang="fr">
 
 <!--https://waytolearnx.com/2019/10/formulaire-de-contact-avec-html-css-et-javascript.html-->
+
 <head>
     <title>Version Tracker - Contact</title>
     <meta charset="UTF-8">
     <meta name="viewport"
           content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    /*MANQUE JS CONTACT */
     <link rel="stylesheet" type="text/css" th:href="@{ /css/index.css}" />
     <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
-    <script type="module" th:src="@{/js/fold2.js}" /></script>
+    <script type="module" th:src="@{/js/fold2.js}"></script>
 </head>
 
 <body>
@@ -21,57 +21,54 @@
             <div id="header">
                 <div th:insert="fragments/components :: header"></div>
             </div>
+            <section aria-label="Breadcrumb" class="breadcrumb" role="navigation">
+		    	<ul id="breadcrumb">
+			        <li><a href="/">Home</a></li>
+			        <li><a href="/contact">Contact</a></li>
+		    	</ul>
+			</section>
         </header>
 
         <nav>
             <div th:insert="fragments/components :: menu"></div>
         </nav>
 
-        <main>
+        <main role="main">
             <h1>Formulaire de contact</h1>
             <form name="contactForm" action="/mailContact" method="post">
-                <table class="form-style">
-                    <tr>
-                        <td>
-                            <label>
-                                Votre nom <span class="required">*</span>
-                            </label>
-                        </td>
-                        <td>
-                            <input type="text" name="name" class="long"/>
-                            <span class="error" id="errorname"></span>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>
-                            <label>
-                                Votre adresse e-mail <span class="required">*</span>
-                            </label>
-                        </td>
-                        <td>
-                            <input type="email" name="email" class="long"/>
-                            <span class="error" id="erroremail"></span>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>
-                            <label>
-                                Message <span class="required">*</span>
-                            </label>
-                        </td>
-                        <td>
-                            <textarea name="message" class="long field-textarea"></textarea>
-                            <span class="error" id="errormsg"></span>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td></td>
-                        <td>
-                            <input type="submit" value="Envoyer">
-                            <input type="reset" value="Réinitialiser">
-                        </td>
-                    </tr>
-                </table>
+            	<fieldset id="fieldset" role="group" aria-label="Formulaire de contact">
+            	<legend>Formulaire de contact</legend>
+	                <div class="form-style">
+	                	<div>
+	                            <label aria-label="Nom" for="name" id="nameLabel">
+	                                Votre nom <span class="required" aria-invalid="true">*</span>
+	                            </label>
+	                            <input type="text" aria-labelledby="nameLabel" name="name" id="name" class="long" required autocomplete="on"/>
+	                            <span class="error" id="errorname"></span>
+						</div>
+	                	<div>
+	                            <label aria-label="e_Mail" for="email" id="emailLabel">
+	                                Votre adresse e-mail <span class="required" aria-invalid="true">*</span>
+	                            </label>
+	                            <input type="email" aria-labelledby="emailLabel" name="email" id="email" class="long" required autocomplete="on"/>
+	                            <span class="error" id="erroremail"></span>
+						</div>
+	                	<div>
+	                            <label aria-label="message" for="message" id="messageLabel">
+	                                Message <span class="required" aria-invalid="true">*</span>
+	                            </label>
+	                            <textarea name="message" aria-labelledby="messageLabel" id="message" class="long field-textarea" required></textarea>
+	                            <span class="error" id="errormsg"></span>
+						</div>
+	                	<div class="commands">
+	                            <input aria-label="Envoyer" type="submit" value="Envoyer">
+	                            <input aria-label="Réinitialiser" type="reset" value="Réinitialiser">
+						</div>
+	                	<div>
+	                    		<p id="champ">* champ obligatoire</p>
+						</div>
+					</div>
+                </fieldset>
             </form>
         </main>
 

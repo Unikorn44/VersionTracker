@@ -1,4 +1,4 @@
-package fr.versiontracker2.api.ressource;
+package fr.versiontracker2.api.resource;
 
 import java.util.List;
 

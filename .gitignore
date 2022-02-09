@@ -35,3 +35,4 @@ build/
 ### Eclipse ###
 .project
 .settings
+.metadata/

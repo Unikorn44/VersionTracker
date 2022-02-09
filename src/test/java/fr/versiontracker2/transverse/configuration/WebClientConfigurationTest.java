@@ -5,16 +5,16 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.web.client.RestTemplate;
+import org.springframework.web.reactive.function.client.WebClient;
 
 @SpringBootTest
-public class WebClientConfigurationTest {
+class WebClientConfigurationTest {
 
     @Autowired
-    RestTemplate restTemplate;
+    WebClient webClient;
 
     @Test
     void restTemplateTest() {
-        assertNotNull(restTemplate);
+        assertNotNull(webClient);
     }
 }

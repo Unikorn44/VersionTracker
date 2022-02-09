@@ -7,10 +7,10 @@ import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
 @SpringBootTest
-public class ExceptionsTest {
+class ExceptionsTest {
 
     @Test
-    public void nonReadableApplicationConfigurationException() {
+    void nonReadableApplicationConfigurationException() {
 
         NonReadableApplicationConfigurationException e1 = new NonReadableApplicationConfigurationException();
         assertNotNull(e1);
@@ -29,7 +29,7 @@ public class ExceptionsTest {
     }
 
     @Test
-    public void nonReadableDependencyFileException() {
+    void nonReadableDependencyFileException() {
         NonReadableDependencyFileException e1 = new NonReadableDependencyFileException();
         assertNotNull(e1);
         NonReadableDependencyFileException e2 = new NonReadableDependencyFileException("Test", new Exception("Test1"));

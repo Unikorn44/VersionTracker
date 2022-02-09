@@ -9,7 +9,7 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <link rel="stylesheet" type="text/css" th:href="@{/css/index.css}" />
     <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
-    <script type="module" th:src="@{/js/fold2.js}" /></script>
+    <script type="module" th:src="@{/js/fold2.js}"></script>
 </head>
 
 <body>
@@ -19,18 +19,25 @@
             <div id="header">
                 <div th:insert="fragments/components :: header"></div>
             </div>
+            <section aria-label="Breadcrumb" class="breadcrumb" role="navigation">
+		    	<ul id="breadcrumb">
+			        <li><a href="/">Home</a></li>
+			        <li>Projets</li>
+			        <li><a href="/triApplication">Tri Application</a></li>
+		    	</ul>
+			</section>
         </header>
 
         <nav>
             <div th:insert="fragments/components :: menu"></div>
         </nav>
 
-        <main>
+         <main role="main">
             <div id="titre">
-                <ul th:each="listedApplication: ${listFileApplications}">
+                <ul role="list" th:each="listedApplication: ${listFileApplications}">
                     <li th:text="'Fichier analysé :' + ${listedApplication.fileApplicationName}"></li>
                     <br>
-                    <ul th:each="listedProject: ${listedApplication.listProjets}">
+                    <ul role="list" th:each="listedProject: ${listedApplication.listProjets}">
                         <div id="rectangle">
                             <li th:text="'Type de données : ' + ${listedProject.name}"></li>
                         </div>
@@ -39,8 +46,9 @@
                             <li th:text="'Package manager : ' + ${listedProject.packageManager}"></li>
 
                             <li>Dependances et Versions :</li>
-                            <ul th:each="trackedDependencyInfo: ${listedProject.trackedDependencyInfos}">
-                                <li th:text="'Dépendance : ' + ${trackedDependencyInfo.getDependency()} +' (version : ' + ${trackedDependencyInfo.getVersion()} + ')'"></li>
+                            <ul role="list" th:each="trackedDependencyInfo: ${listedProject.trackedDependencyInfos}">
+                                <li th:text="'Dépendance : ' + ${trackedDependencyInfo.getDependency()} +' 
+                                	(version : ' + ${trackedDependencyInfo.getVersion()} + ')'"></li>
                             </ul>
                         </div>
                         <br>

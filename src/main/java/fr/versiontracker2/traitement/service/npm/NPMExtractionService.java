@@ -26,23 +26,20 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public class NPMExtractionService {
 
-    public static final String URL_DES_DEPENDANCES_INVALIDES = "Url des dépendances invalides";
-    public static final String IMPOSSIBLE_DE_LIRE_LES_DEPENDANCES = "Impossible de lire les dépendances";
+    public static final String IMPOSSIBLE_DE_LIRE_LES_DEPENDANCES = "Impossible de lire les dépendances";   
+    
     @Autowired
     private WebClient webClient;
+    
+    /**
+     * Reçoit adresse URL, dependance recherchée, autorisation  
+     * @param valueUrl
+     * @param trackedDependency
+     * @param authorizedClient
+     * @return dépendance
+     * @throws NonReadableDependencyFileException
+     */
     public Dependency getVersionWithJackson(String valueUrl, String trackedDependency, OAuth2AuthorizedClient authorizedClient) throws NonReadableDependencyFileException {
-
-//        URL fileURL;
-//        try {
-//            if (valueUrl.matches("http.*")) {
-//                fileURL = new URL(valueUrl);
-//            } else {
-//                fileURL = new URL("file:///" + valueUrl);
-//            }
-//        } catch (MalformedURLException e) {
-//            log.error(URL_DES_DEPENDANCES_INVALIDES, e);
-//            throw new NonReadableDependencyFileException(URL_DES_DEPENDANCES_INVALIDES, e);
-//        }
         ObjectMapper objectMapper = new ObjectMapper();
         objectMapper.disable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES);
 
@@ -55,7 +52,6 @@ public class NPMExtractionService {
                     .bodyToMono(NPMDependency.class)
                     .block();
 
-            //NPMDependency npmDependency = objectMapper.readValue(fileURL, NPMDependency.class);
             Dependency dependency = new Dependency();
             dependency.setName(trackedDependency);
             dependency.setVersion(findVersionNPM(trackedDependency, npmDependency));
@@ -66,6 +62,12 @@ public class NPMExtractionService {
         }
     }
 
+    /**
+     * Reçoit dépendance recherchée, liste des dépendances
+     * @param trackedDependency
+     * @param npmDependency
+     * @return version dépendance
+     */
     public String findVersionNPM(String trackedDependency, NPMDependency npmDependency) {
         Map<String, String> dependenciesMap = npmDependency.getDependencies();
         String versionNPM = null;

@@ -9,7 +9,7 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <link rel="stylesheet" type="text/css" th:href="@{/css/index.css}" />
     <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
-    <script type="module" th:src="@{/js/fold2.js}" /></script>
+    <script type="module" th:src="@{/js/fold2.js}"></script>
 </head>
 
 <body>
@@ -19,13 +19,20 @@
             <div id="header">
                 <div th:insert="fragments/components :: header"></div>
             </div>
+            <section aria-label="Breadcrumb" class="breadcrumb" role="navigation">
+		    	<ul id="breadcrumb">
+			        <li><a href="/">Home</a></li>
+			        <li>Projets</li>
+			        <li><a href="/triProject">Tri Projet</a></li>
+		    	</ul>
+			</section>
         </header>
 
         <nav>
             <div th:insert="fragments/components :: menu"></div>
         </nav>
 
-        <main>
+         <main role="main">
             <div id="annonce">
                 <p>
                     Liste des dépendances triées par projet :
@@ -35,7 +42,7 @@
             <div id="results">
                 <div th:each="projet:${listDependencies.keySet}">
                     <table>
-                        <!--<caption>Liste des dépendances triées par projet</caption>-->
+                        <caption style="display: none;" aria-label ="liste dépendances">Liste des dépendances triées par projet</caption>
                         <thead>
                             <tr>
                                 <th th:text="${projet}" th:id="${projet}"></th>

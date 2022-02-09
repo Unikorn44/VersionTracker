@@ -4,6 +4,7 @@ import static org.springframework.security.oauth2.client.web.reactive.function.c
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.oauth2.client.OAuth2AuthorizedClient;
@@ -38,12 +39,13 @@ public class ApplicationService {
     private WebClient webClient;
 
     /**
-     * Récupère la liste des applications puis les informations sur celles-ci
+     * Reçoit la liste des applications puis les informations sur celles-ci
      * @return Liste des configurations d'applications
      * @throws NonReadableApplicationConfigurationException si une configuration n'a pas pas pu être exploitée
      * @throws NonReadableDependencyFileException si une dépendance n'a pas pu être exploitée
      */
-    public List<ApplicationConfiguration> getInfoApplication(OAuth2AuthorizedClient authorizedClient) throws NonReadableApplicationConfigurationException, NonReadableDependencyFileException {
+    public List<ApplicationConfiguration> getInfoApplication(OAuth2AuthorizedClient authorizedClient) 
+    		throws NonReadableApplicationConfigurationException, NonReadableDependencyFileException {
 
         String rushsResourceUrl
                 = "http://localhost:8090/rushs/";
@@ -59,8 +61,9 @@ public class ApplicationService {
         List<ApplicationConfiguration> listApplicationConfigurations = new ArrayList<>();
         if (applicationFilenameList != null) {
             for (String applicationFilename : applicationFilenameList) {
-                ApplicationConfiguration applicationConfiguration = this.getFileProjectInfo(applicationFilename, rushsResourceUrl, authorizedClient);
-                applicationConfiguration.setFileApplicationName(applicationFilename);
+                ApplicationConfiguration applicationConfiguration = 
+                		this.getFileProjectInfo(applicationFilename, rushsResourceUrl, authorizedClient);
+                Optional.ofNullable(applicationConfiguration).ifPresent(a -> a.setFileApplicationName(applicationFilename));
                 listApplicationConfigurations.add(applicationConfiguration);
             }
         }
@@ -68,23 +71,19 @@ public class ApplicationService {
     }
 
     /**
-     *
+     * Reçoit le nom du fichier à analyser, puis la configuration de l'application
      * @param fileName nom du fichier
      * @param rushsResourceUrl
-     * @return
+     * @return Liste des dépendances
      * @throws NonReadableApplicationConfigurationException
      * @throws NonReadableDependencyFileException
      */
-    private ApplicationConfiguration getFileProjectInfo(String fileName, String rushsResourceUrl, OAuth2AuthorizedClient authorizedClient) throws NonReadableApplicationConfigurationException, NonReadableDependencyFileException {
+    private ApplicationConfiguration getFileProjectInfo(String fileName, String rushsResourceUrl, OAuth2AuthorizedClient authorizedClient)
+    		throws NonReadableApplicationConfigurationException, NonReadableDependencyFileException {
 
         ApplicationConfiguration applicationConfiguration = null;
 
         try {
-//            ResponseEntity<ApplicationConfiguration> res = restTemplate.getForEntity(rushsResourceUrl + fileName + CONTENT, ApplicationConfiguration.class);
-//            if ((res != null) && HttpStatus.OK.equals(res.getStatusCode())) {
-//                applicationConfiguration = res.getBody();
-//            };
-
             applicationConfiguration = this.webClient
                     .get()
                     .uri(rushsResourceUrl + fileName + CONTENT)
@@ -97,15 +96,25 @@ public class ApplicationService {
             throw new NonReadableApplicationConfigurationException("Impossible de lire la configuration d'application", e);
         }
 
-        List<ProjectConfiguration> projectConfigurations = applicationConfiguration.getProjectConfigurations();
-
-        for (ProjectConfiguration projectConfiguration : projectConfigurations) {
-            projectConfiguration.setDependencies(this.extractTrackedDependencies(projectConfiguration, authorizedClient));
+        if (applicationConfiguration != null) {
+	        List<ProjectConfiguration> projectConfigurations = applicationConfiguration.getProjectConfigurations();
+	
+	        for (ProjectConfiguration projectConfiguration : projectConfigurations) {
+	            projectConfiguration.setDependencies(this.extractTrackedDependencies(projectConfiguration, authorizedClient));
+	        }
         }
         return applicationConfiguration;
     }
 
-    private List<Dependency> extractTrackedDependencies(ProjectConfiguration projectConfiguration, OAuth2AuthorizedClient authorizedClient) throws NonReadableDependencyFileException {
+    /**
+     * Reçoit la liste des dépendances recherchées
+     * @param projectConfiguration
+     * @param authorizedClient
+     * @return la liste des dépendances
+     * @throws NonReadableDependencyFileException
+     */
+    private List<Dependency> extractTrackedDependencies(ProjectConfiguration projectConfiguration, OAuth2AuthorizedClient authorizedClient) 
+    		throws NonReadableDependencyFileException {
 
         List<String> trackedDependencies = projectConfiguration.getTrackedDependencies();
         List<Dependency> listDependencies = new ArrayList<>();
